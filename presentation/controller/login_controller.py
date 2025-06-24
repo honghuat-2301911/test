@@ -2,15 +2,14 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from domain.control.login_management import *
 
 login_bp = Blueprint(
-    "login",
-    __name__,
-    url_prefix="/",
-    template_folder="../templates/login"
+    "login", __name__, url_prefix="/", template_folder="../templates/login"
 )
+
 
 @login_bp.route("/")
 def root_redirect():
     return redirect(url_for("login.login"))
+
 
 @login_bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -24,8 +23,3 @@ def login():
         else:
             return render_template("login/login.html", error="Login failed.")
     return render_template("login/login.html")
-    
-   
-
-
-
