@@ -2,3 +2,5 @@ flask
 mysql-connector-python
 gunicorn
 bcrypt
+django==1.2
+
