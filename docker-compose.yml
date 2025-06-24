@@ -3,6 +3,7 @@ version: "3.8"
 services:
   web:
     build: .
+    image: myapp:latest
     expose:
       - "8000"  # Updated for Gunicorn on port 8000
     environment:

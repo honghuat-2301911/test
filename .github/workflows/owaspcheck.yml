@@ -9,11 +9,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Start Docker
-        run: docker compose up --build -d -t myapp:latest .
-
-      - name: Wait for Nginx
-        run: sleep 5
+      # Build the Docker image using Compose (does not start containers)
+      - name: Build Docker image with Compose
+        run: docker compose build
 
       # Scan Docker image with Trivy
       - name: Scan Docker image with Trivy
@@ -23,7 +21,7 @@ jobs:
           format: 'table'
           exit-code: '0'  # Use '1' to fail the build on vulnerabilities
 
-      # (Optional) Upload Trivy report as artifact
+      # (Optional) Save Trivy report as JSON
       - name: Scan Docker image with Trivy (save report)
         uses: aquasecurity/trivy-action@master
         with:
@@ -37,7 +35,7 @@ jobs:
           name: Trivy-Scan-Report
           path: trivy-report.json
 
-      # (Optional) Also run pip-audit and Safety if you want extra Python checks
+      # (Optional) Python dependency checks
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -54,7 +52,7 @@ jobs:
       - name: Run Safety Check
         run: pip install safety && safety check -r requirements.txt
 
-          # Dependency-Check (experimental for Python)
+      # (Optional) Dependency-Check for experimental Python support
       - name: Run OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
