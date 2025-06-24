@@ -1,6 +1,7 @@
 from flask import g
-from domain.entity.user import User
+
 from data_source.user_queries import get_user_by_email
+from domain.entity.user import User
 
 
 def login_user(email: str, password: str):

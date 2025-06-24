@@ -1,8 +1,8 @@
 from flask import Flask
-from presentation.controller.login_controller import login_bp
-from presentation.controller.social_feed_controller import social_feed_bp
 
+from presentation.controller.login_controller import login_bp
 from presentation.controller.register_controller import register_bp
+from presentation.controller.social_feed_controller import social_feed_bp
 
 # from data_source.login_queries import init_schema
 

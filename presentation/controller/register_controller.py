@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from domain.control.register import *
 import random
+
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
+
+from domain.control.register import *
 
 register_bp = Blueprint(
     "register", __name__, url_prefix="/", template_folder="../templates/"

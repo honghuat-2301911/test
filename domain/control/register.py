@@ -1,7 +1,7 @@
-from domain.entity.user import User
-from data_source.user_queries import *
-
 from dataclasses import asdict
+
+from data_source.user_queries import *
+from domain.entity.user import User
 
 
 def register_user(user_data: dict) -> bool:

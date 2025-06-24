@@ -1,15 +1,17 @@
+import os
+
 from flask import (
     Blueprint,
+    current_app,
+    redirect,
     render_template,
     request,
-    redirect,
-    url_for,
     session,
-    current_app,
+    url_for,
 )
-from data_source.social_feed_queries import get_all_posts, add_post, add_comment
-import os
 from werkzeug.utils import secure_filename
+
+from data_source.social_feed_queries import add_comment, add_post, get_all_posts
 
 social_feed_bp = Blueprint("social_feed", __name__, url_prefix="/feed")
 
