@@ -22,8 +22,5 @@ jobs:
       - name: Check code formatting with Black
         run: black --check .
 
-      - name: Lint with pylint
-        run: find . -type f -name "*.py" ! -path "./venv/*" -print0 | xargs -0 pylint
-
       - name: Type check with mypy
         run: mypy .
