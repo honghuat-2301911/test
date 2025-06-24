@@ -17,7 +17,9 @@ jobs:
         run: pip install mypy black isort pylint
 
       - name: Check import sorting with isort
-        run: isort . --profile black --check --diff
+        uses: isort/isort-action@v1
+        with:
+          configuration: "--profile black --check-only --diff"
 
       - name: Check code formatting with Black
         run: black --check .
