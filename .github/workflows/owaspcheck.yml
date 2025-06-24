@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Start Docker
-        run: docker compose up --build -d
+        run: docker compose up --build -d -t myapp:latest .
 
       - name: Wait for Nginx
         run: sleep 5
