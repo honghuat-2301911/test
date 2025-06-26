@@ -1,7 +1,6 @@
-name: Python Lint, Format, and Type Check
+name: ESlint, Pylint and Format using [black,isort]
 
 on: [push, pull_request]
-
 
 jobs:
   lint-format-typecheck:
@@ -14,13 +13,21 @@ jobs:
         run: docker compose up --build -d
 
       - name: Install dependencies
-        run: pip install mypy black isort pylint
+        run: pip install mypy black pylint
 
+      # Use isort to check if imports are formatted properly
       - name: Check import sorting with isort
         uses: isort/isort-action@v1
         with:
           configuration: "--profile black --check-only --diff"
 
+      # Use Black to check the format of python codes
       - name: Check code formatting with Black
         run: black --check .
+
+      # Use Pylint to lint Python files as flask mainly uses python
+      - name: Lint with pylint
+        run: find . -type f -name "*.py" ! -path "./venv/*" -print0 | xargs -0 pylint
+
+      # Use ESlint for Javascript files and security
 

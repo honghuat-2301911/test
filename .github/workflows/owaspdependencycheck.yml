@@ -1,4 +1,4 @@
-name: OWASP Dependency Check
+name: Dependency Security Scan
 
 on: [push, pull_request]
 
@@ -6,9 +6,53 @@ jobs:
   security-scan:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
 
+      # Build the Docker image using Compose (does not start containers)
+      - name: Build Docker image with Compose
+        run: docker compose build
+
+      # Scan Docker image with Trivy
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:latest'
+          format: 'table'
+          exit-code: '0'  # Use '1' to fail the build on vulnerabilities
+
+      # (Optional) Save Trivy report as JSON
+      - name: Scan Docker image with Trivy (save report)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:latest'
+          format: 'json'
+          output: 'trivy-report.json'
+
+      - name: Upload Trivy scan report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Trivy-Scan-Report
+          path: trivy-report.json
+
+      # (Optional) Python dependency checks
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pip-audit
+        run: pip install pip-audit && pip-audit
+
+      - name: Run Safety Check
+        run: pip install safety && safety check -r requirements.txt
+
+      # (Optional) Dependency-Check for experimental Python support
       - name: Run OWASP Dependency Check
         uses: dependency-check/Dependency-Check_Action@main
         with:
@@ -17,7 +61,7 @@ jobs:
           format: "HTML"
           out: "dependency-check-report"
 
-      - name: Upload Report
+      - name: Upload Dependency-Check Report
         uses: actions/upload-artifact@v4
         with:
           name: Dependency-Check-Report
