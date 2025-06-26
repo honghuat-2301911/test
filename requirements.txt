@@ -2,4 +2,3 @@ flask
 mysql-connector-python
 gunicorn
 bcrypt
-setuptools>=78.1.1
