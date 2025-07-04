@@ -17,12 +17,22 @@ jobs:
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13.0' 
-          
-      - name: Install pip-audit
-        run: pip install --upgrade pip-audit
+          python-version: '3.13.0'
 
-      - name: Run pip-audit on requirements.txt 
+      - name: Install from requirements.txt
         run: |
-          pip-audit -r requirements.txt || echo "Vulnerabilities found:"
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Freeze installed packages to temp file
+        run: |
+          pip freeze > audited-requirements.txt
+          echo "Auditing the following packages"
+          cat audited-requirements.txt
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Run pip-audit on frozen requirements
+        run: pip-audit -r audited-requirements.txt || echo "⚠️ Vulnerabilities found:)"
 
